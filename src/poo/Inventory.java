@@ -2,6 +2,7 @@ package poo;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Inventory {
     public static void main(String[] args){
@@ -20,6 +21,9 @@ public class Inventory {
                     break;
                 case 2:
                     search(input, products);
+                    break;
+                case 3:
+                    filterByCategory(input, products);
                     break;
                 case 8:
                     noExit = false;
@@ -129,7 +133,7 @@ public class Inventory {
         System.out.println("6. Update product stock");
         System.out.println("7. Show all products");
         System.out.println("8. Exit");
-        System.out.println("\n============================================\n");
+        System.out.println("\n======================================\n");
         while(true) {
             System.out.print("Select an option: ");
             try {
@@ -167,6 +171,49 @@ public class Inventory {
         if (!found) {
             System.out.println("\nProduct not found!");
         }
+    }
+
+    public static void filterByCategory(Scanner input, ArrayList<Product> products){
+        System.out.println("\n======== FILTER BY CATEGORY =========\n");
+        System.out.print("Enter category name: : ");
+        String name = input.nextLine();
+        int quantity = 0;
+        for(Product product: products) {
+            if(product.getCategory().equalsIgnoreCase(name)){
+                System.out.printf("%-12s %10.2f  %d%n",
+                    product.getName(),
+                    product.getPrice(),
+                    product.getStock());
+                quantity++;
+            }
+        }
+        System.out.printf("%nProducts found: %d%n:", quantity);
+    }
+
+    public static void inventory(Scanner input, ArrayList<Product> products){
+        System.out.println("\n======== INVENTORY UNITS =========\n");
+        int total = 0;
+        for(Product product: products) {
+            System.out.printf("%-12s: %d%n",
+                    product.getName(),
+                    product.getStock());
+            total += product.getStock();
+        }
+        System.out.printf("%nTotal units: %d%n:", total);
+    }
+
+    public static void highestStock(Scanner input, ArrayList<Product> products){
+        System.out.println("\n======== INVENTORY UNITS =========\n");
+        Product highestProduct = null;
+        for(Product product: products) {
+            if(highestProduct == null || highestProduct.getStock() < product.getStock()){
+                highestProduct = product;
+            }
+        }
+
+        System.out.printf("Product: %-12%n",  highestProduct.getName());
+        System.out.printf("Stock: %d%n",  highestProduct.getStock());
+        System.out.printf("Category: %d%n",  highestProduct.getCategory());
     }
 
 
